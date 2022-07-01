@@ -11,3 +11,19 @@ const fetchMeals = async () => {
     .then((res) => res.json())
     .then((data) => (mealData = data.meals));
 };
+const mealsDisplay = async () => {
+  await fetchMeals();
+
+  console.log(mealData[0]);
+
+  result.innerHTML = mealData
+    .map(
+      (meal) => `
+        <li>
+          <p>${meal.strMeal}</p>
+          <img src='${meal.strMealThumb}'>
+        </li>
+    `
+    )
+    .join(' ');
+};
