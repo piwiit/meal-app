@@ -10,20 +10,35 @@ const fetchMeals = async (search) => {
 };
 
 const mealsDisplay = () => {
-  mealData.length = 12;
+  if (mealData === null) {
+    result.innerHTML = `
+      <h2>Aucun résultat</h2> 
+    `;
+  } else {
+    mealData.length = 12;
 
-  result.innerHTML = mealData
-    .map(
-      (meal) =>
-        `
-    <li>
-          <h2>${meal.strMeal}</h2>
-          <p>${meal.strArea}</p>          
-          <img src='${meal.strMealThumb}'>
+    result.innerHTML = mealData
+      .map((meal) => {
+        let ingredients = [];
+        for (let i = 0; i < 21; i++) {
+          if (meal[`strIngredient${i}`]) {
+            let ingredient = meal[`strIngredient${i}`];
+            let measure = meal[`strMeasure${i}`];
+            ingredients.push(`<li>${ingredient} - ${measure}</li>`);
+          }
+        }
+        console.log(ingredients);
+        return `
+          <li>
+            <h2>${meal.strMeal}</h2>
+            <p>${meal.strArea}</p>          
+            <img src='${meal.strMealThumb}'>
+            <ul>${ingredients.join('')}</ul>
           </li>
-          `
-    )
-    .join(' ');
+            `;
+      })
+      .join(' ');
+  }
 };
 
 input.addEventListener('input', (e) => {
